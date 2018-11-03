@@ -11,7 +11,7 @@ const clientConnected = () => {
 const emitProjects = async (socket) => {
     try {
         const projects = await event.getProjects();
-        socket.emit('allProjects', projects);
+        io.emit('allProjects', projects);
     } catch (error) {
         console.error(error);
     }
