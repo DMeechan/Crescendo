@@ -5,16 +5,50 @@
       <p id='server-time'></p>
     </div>
     <hr />
+    <p>Users connected: 
+      <span id="users"></span>
+    </p>
+    <hr />
     <div>
       <h3>Create project</h3>
       <input id="project-name" />
       <button id="create-project">Create</button>
     </div>
+    <br />
+    <hr />
+    <div>
+      <h3>Upload track (under construction)</h3>
+      <div>
+        <form role="form" onsubmit="return false;">
+          <div class="form-group">
+            <label for="file">File</label>
+            <input id="file" type="file" class="form-control">
+          </div>
+          <br />
+          <button id="upload" type="button">Upload</button>
+        </form>
+      </div>
+      <input id="track-name" />
+      <input id="track-project-id" />
+      <button id="create-track">Create</button>
+    </div>
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <hr />
+    <button id="delete-all">dont touch that cactus</button>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.slim.dev.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
     <script>
       let socket = io();
-      let $time = document.getElementById('server-time');
-      let $name = document.getElementById("project-name");
+      const $time = document.getElementById('server-time');
+      const $name = document.getElementById("project-name");
+      const $trackName = document.getElementById("track-name");
+      const $trackProjectId = document.getElementById("track-project-id");
+      const $users = document.getElementById('users');
 
       document.getElementById("create-project").addEventListener("click", function() {
         console.log('emitting createProject: ', $name.value);
@@ -23,14 +57,58 @@
         });
       });
 
+      document.getElementById("create-track").addEventListener("click", function() {
+        console.log('emitting addTrack: ', $trackName.value);
+        socket.emit("addTrack", {
+          projectId: $trackProjectId.value,
+          name: $trackName.value,
+          url: "http://google.com",
+          length: 1000,
+        });
+      });
+
+
       socket.on('time', function(timeString) {
         $time.innerHTML = 'Server time: ' + timeString;
+      });
+
+      socket.on('users', function(data) {
+        $users.innerHTML = data.count;
       });
 
       socket.on('allProjects', function(data) {
         console.log('allProjects data received:');
         console.log(data);
       });
+
+      document.getElementById('upload').onclick = function() {
+        const data = new FormData();
+        const file = document.getElementById('file').files[0];
+        console.log('Log:document.getElementById -> file', file);
+        data.append('foo', 'bar');
+        data.append('file', file);
+        const config = {
+          onUploadProgress: function(progressEvent) {
+            const status = (progressEvent.loaded * 100) / progressEvent.total;
+            const percentCompleted = Math.round(status);
+          }
+        }
+
+        axios.post('http://file.io', data, config)
+          .then(res => {
+            console.log(res.data);
+            socket.emit()
+
+          }).catch(err => {
+            console.error(err);
+          })
+      }
+
+      document.getElementById("delete-all").addEventListener("click", function() {
+        console.log('emitting deleteAll');
+        socket.emit("deleteAll");
+      });
+
     </script>
   </body>
 </html>

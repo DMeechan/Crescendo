@@ -3,9 +3,12 @@ const event = new Event();
 
 let numUsers = 0;
 
-const clientConnected = () => {
+const clientConnected = io => {
     numUsers += 1;
     console.log(`Client connected: ${numUsers} online`);
+    io.emit('users', {
+        count: numUsers
+    });
 }
 
 const emitProjects = async (io) => {
@@ -29,9 +32,11 @@ const start = httpServer => {
     const io = require("socket.io")(httpServer);
 
     io.on('connection', async socket => {
-        clientConnected();
+        clientConnected(io);
 
-        emitProjects(io);
+        // Emit the projects to just that client
+        const projects = await event.getProjects();
+        socket.emit('allProjects', projects);
         emitTimeRegularly(socket);
 
         socket.on('createProject', async data => {
@@ -45,11 +50,21 @@ const start = httpServer => {
         });
 
         socket.on('addTrack', async data => {
-            await event.createTrack({
+            const exampleData = {
+                projectId: '',
+                name: '',
+                url: '',
+                length: '',
+            };
+
+
+            const { projectId } = data;
+            const trackData = {
                 name: data.name,
                 url: data.url,
                 length: data.length,
-            });
+            };
+            await event.addTrack(trackData, projectId);
             emitProjects(io);
         });
 
@@ -58,9 +73,17 @@ const start = httpServer => {
             emitProjects(io);
         });
 
+        socket.on('deleteAll', async () => {
+            await event.deleteAll();
+            emitProjects(io);
+        });
+
         socket.on('disconnect', () => {
             numUsers -= 1;
             console.log(`Client disconnected: ${numUsers} online`);
+            io.emit('users', {
+                count: numUsers
+            });
         })
 
     });
