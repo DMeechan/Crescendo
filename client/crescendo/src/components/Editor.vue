@@ -21,7 +21,6 @@
     color: #61AFEF;
     padding: 64px;
     position: relative;
-    
 }
 
 .editor .track:not(:last-child) {
