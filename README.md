@@ -4,6 +4,8 @@ Record and edit music together with your friends in real-time from around the wo
 
 In a nutshell: Google Docs for collaborative music creation
 
+[http://bit.ly/hack-collab](http://bit.ly/hack-collab)
+
 ## Architecture
 
 - Front-end **Vue.js** client, hosted & built on [Netlify](https://crescendo-live.netlify.com/)
