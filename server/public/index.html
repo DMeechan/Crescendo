@@ -1,12 +1,35 @@
 <html>
   <body>
-    <p id='server-time'></p>
+    <div>
+      <h3>Server response</h3>
+      <p id='server-time'></p>
+    </div>
+    <hr />
+    <div>
+      <h3>Create project</h3>
+      <input id="project-name" />
+      <button id="create-project">Create</button>
+    </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.slim.dev.js"></script>
     <script>
-      var socket = io();
-      var el = document.getElementById('server-time');
+      let socket = io();
+      let $time = document.getElementById('server-time');
+      let $name = document.getElementById("project-name");
+
+      document.getElementById("create-project").addEventListener("click", function() {
+        console.log('emitting createProject: ', $name.value);
+        socket.emit("createProject", {
+          name: $name.value
+        });
+      });
+
       socket.on('time', function(timeString) {
-        el.innerHTML = 'Server time: ' + timeString;
+        $time.innerHTML = 'Server time: ' + timeString;
+      });
+
+      socket.on('allProjects', function(data) {
+        console.log('allProjects data received:');
+        console.log(data);
       });
     </script>
   </body>

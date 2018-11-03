@@ -1,51 +1,61 @@
+const Event = require('./events');
+const event = new Event();
+
+let numUsers = 0;
+
+const clientConnected = () => {
+    numUsers += 1;
+    console.log(`Client connected: ${numUsers} online`);
+}
+
+const emitProjects = async (socket) => {
+    try {
+        const projects = await event.getProjects();
+        socket.emit('allProjects', projects);
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+const emitTimeRegularly = socket => {
+    const fiveSeconds = 5000;
+    socket.emit('time', new Date().toTimeString());
+    setInterval(() => {
+        socket.emit('time', new Date().toTimeString());
+    }, fiveSeconds);
+}
+
 const start = httpServer => {
     const io = require("socket.io")(httpServer);
 
-    io.on('connection', socket => {
-        console.log('Client connected');
+    io.on('connection', async socket => {
+        clientConnected();
 
-        socket.emit('allProjects', [
-            {
-                id: 1,
-                name: 'project1',
-                tracks: [1, 2, 3],
-            },
-            {
-                id: 2,
-                name: 'project2',
-                tracks: [],
-            },
-            {
-                id: 3,
-                name: 'project3',
-                tracks: [4, 5, 6, 7],
-            },
-        ]);
+        emitProjects(socket);
+        emitTimeRegularly(socket);
+
+        socket.on('createProject', async data => {
+            await event.createProject(data.name);
+            emitProjects(socket);
+        });
+
+        socket.on('deleteProject', async data => {
+            await event.deleteProject(data._id);
+            emitProjects(socket);
+        });
+
+        socket.on('addTrack', data => {
+
+        });
+
+        socket.on('deleteTrack', data => {
+
+        });
 
         socket.on('disconnect', () => {
-            console.log('Client disconnected');
+            numUsers -= 1;
+            console.log(`Client disconnected: ${numUsers} online`);
         })
-
-        const hundredSeconds = 100000;
-        setInterval(() => {
-            io.emit('time', new Date().toTimeString())
-        }, hundredSeconds);
-
-        socket.on('create project', data => {
-            
-        });
-
-        socket.on('delete project', data => {
-
-        });
-
-        socket.on('add track', data => {
-
-        });
-
-        socket.on('delete track', data => {
-
-        });
 
     });
 };
