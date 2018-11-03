@@ -14,7 +14,7 @@ class Event {
             return {};
         }
     }
-    
+
     async createProject(name) {
         try {
             await Project.create({
@@ -33,13 +33,29 @@ class Event {
         }
     }
 
+    async addTrack(trackData, projectId) {
+        try {
+            const track = await this.createTrack(trackData);
+            await Project.updateOne({
+                _id: projectId
+            },
+                {
+                    $push: {
+                        tracks: track
+                    }
+                });
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     async createTrack(data) {
         if (!data.name || !data.url || !data.length) {
             console.error('createTrack | Whoop, found not find name, url, or length data');
             return;
         }
         try {
-            await Track.create(data);
+            return await Track.create(data);
         } catch (error) {
             console.error(error);
         }

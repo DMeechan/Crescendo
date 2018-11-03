@@ -50,11 +50,21 @@ const start = httpServer => {
         });
 
         socket.on('addTrack', async data => {
-            await event.createTrack({
+            const exampleData = {
+                projectId: '',
+                name: '',
+                url: '',
+                length: '',
+            };
+
+
+            const { projectId } = data;
+            const trackData = {
                 name: data.name,
                 url: data.url,
                 length: data.length,
-            });
+            };
+            await event.addTrack(trackData, projectId);
             emitProjects(io);
         });
 

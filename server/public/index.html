@@ -5,16 +5,31 @@
       <p id='server-time'></p>
     </div>
     <hr />
+    <p>Users connected: 
+      <span id="users"></span>
+    </p>
+    <hr />
     <div>
       <h3>Create project</h3>
       <input id="project-name" />
       <button id="create-project">Create</button>
     </div>
+    <br />
+    <hr />
+    <div>
+        <h3>Create track</h3>
+        <input id="track-name" />
+        <input id="track-project-id" />
+        <button id="create-track">Create</button>
+      </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.slim.dev.js"></script>
     <script>
       let socket = io();
-      let $time = document.getElementById('server-time');
-      let $name = document.getElementById("project-name");
+      const $time = document.getElementById('server-time');
+      const $name = document.getElementById("project-name");
+      const $trackName = document.getElementById("track-name");
+      const $trackProjectId = document.getElementById("track-project-id");
+      const $users = document.getElementById('users');
 
       document.getElementById("create-project").addEventListener("click", function() {
         console.log('emitting createProject: ', $name.value);
@@ -23,8 +38,23 @@
         });
       });
 
+      document.getElementById("create-track").addEventListener("click", function() {
+        console.log('emitting addTrack: ', $trackName.value);
+        socket.emit("addTrack", {
+          projectId: $trackProjectId.value,
+          name: $trackName.value,
+          url: "http://google.com",
+          length: 1000,
+        });
+      });
+
+
       socket.on('time', function(timeString) {
         $time.innerHTML = 'Server time: ' + timeString;
+      });
+
+      socket.on('users', function(data) {
+        $users.innerHTML = data.count;
       });
 
       socket.on('allProjects', function(data) {
