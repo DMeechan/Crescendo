@@ -6,14 +6,17 @@ const start = httpServer => {
 
         socket.emit('allProjects', [
             {
+                id: 1,
                 name: 'project1',
                 tracks: [1, 2, 3],
             },
             {
+                id: 2,
                 name: 'project2',
                 tracks: [],
             },
             {
+                id: 3,
                 name: 'project3',
                 tracks: [4, 5, 6, 7],
             },

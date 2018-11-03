@@ -1,6 +1,5 @@
 // Get MongoDB library and schemas
 const mongoose = require("mongoose");
-const { Project, Track } = require("./schemas");
 
 // Get credentials for database
 const { mongodb } = require("../credentials");
