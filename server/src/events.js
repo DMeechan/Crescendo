@@ -69,6 +69,15 @@ class Event {
         }
     }
 
+    async deleteAll() {
+        try {
+            await Track.collection.drop();
+            await Project.collection.drop();
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
 }
 
 module.exports = Event;

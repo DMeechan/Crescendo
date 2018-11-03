@@ -73,6 +73,11 @@ const start = httpServer => {
             emitProjects(io);
         });
 
+        socket.on('deleteAll', async () => {
+            await event.deleteAll();
+            emitProjects(io);
+        });
+
         socket.on('disconnect', () => {
             numUsers -= 1;
             console.log(`Client disconnected: ${numUsers} online`);

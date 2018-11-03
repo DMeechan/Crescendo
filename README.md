@@ -28,6 +28,14 @@ The back-end Node.js performs three roles:
 ## Getting started
 
 1. Clone the repository
+2. `cd client` to enter client directory
+3. Run `npm install` to install the client dependencies
+4. Run `npm run dev`
+5. Open up a separate Terminal and do the following
+6. `cd server` to enter server directory
+7. Run `npm install` to install the server dependencies
+8. Copy the `.env.default` file to `.env` and fill it in with your MongoDB database credentials
+9. Use `npm run dev` to start the back-end server
 
 ## Credit
 
