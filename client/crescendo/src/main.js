@@ -32,6 +32,14 @@ export const globalStore = new Vue({
       tracks: ["1","2"],
       length: 244533
     }]
+  }, 
+  methods: {
+    getProjects() {
+      console.log(this)
+    },
+    getProject(id) {
+      
+    }
   }
 })
 
@@ -48,9 +56,14 @@ export const global = new Vue({
   sockets:{
     connect: function(){
       console.log('socket connected')
+      globalStore.socket = this.$socket
     },
     customEmit: function(val){
       console.log('this method was fired by the socket server. eg: io.emit("customEmit", data)')
+    },
+    allProjects: (projects) => {
+      console.log(projects)
+      globalStore.projects = projects
     }
   },
   data: {

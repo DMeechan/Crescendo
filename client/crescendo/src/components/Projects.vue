@@ -1,6 +1,6 @@
 <template>
     <div class="grid">
-        <router-link v-for="project in projects" :to="'/project/' + project.id" :key="project.id" >
+        <router-link v-for="project in projects" :to="`/project/${project.id}`" :key="project.id" >
             <div class="project">
                 <h2>{{project.name}}</h2>
 
@@ -30,6 +30,11 @@
     
     }
 
+    a {
+        color: white;
+        text-decoration: none;
+    }
+
     .project span {
        align-self: flex-end;
     }
@@ -40,6 +45,9 @@ import {globalStore} from '../main.js'
 
 export default {
   name: 'Projects',
+  created () {
+      
+  },
   data () {
     return {
       msg: 'Welcome to Your Vue.js App',

@@ -12,8 +12,23 @@
 
 <script>
 import Editor from './Editor'
+import {globalStore, global} from '../main.js'
 export default {
     name: "Project",
-    props: ["id", "tracks"]
+    props: ["id"],
+    components: {
+        Editor,
+    },
+    beforeRouteUpdate (to, from, next) {
+        console.log(globalStore.socket)
+    },
+    data() {
+        return {
+            tracks: {}
+        }
+    },
+    created() {
+        globalStore.getProject(this.props.id);
+    }
 }
 </script>

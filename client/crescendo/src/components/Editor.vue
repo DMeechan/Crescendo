@@ -1,8 +1,8 @@
 <template>
     <div class="editor">
-        <div class="tracks">
-
-        </div>
+        <draggable v-model="tracks" @start="drag=true" @end="drag=false">
+            <div v-for="element in tracks" :key="element.id">{{element.name}}</div>
+        </draggable>
     </div>
 </template>
 
@@ -12,9 +12,13 @@
 
 
 <script>
+import draggable from 'vuedraggable'
 export default {
     name: 'Editor',
-    props: ['tracks']
+    props: ['tracks'],
+    components: {
+        draggable
+    }
 }
 </script>
 
