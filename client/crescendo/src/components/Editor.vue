@@ -50,23 +50,15 @@
 <script>
 import draggable from 'vuedraggable'
 import { SoundCloudWaveform } from '../wave';
+import { global, store } from '../main.js'
 
 export default {
     name: 'Editor',
-    data() {
-        return {
-            tracks: [{
-                    name: "Track One",
-                    id: 1, 
-                    length: 1000,
-                    url: "https://ia801501.us.archive.org/25/items/bitter2018-11-02/01OtherDoor.mp3"
-                },
-                {
-                    name: "two", 
-                    id: 2, 
-                    length: 2000,
-                    url: "https://ia801501.us.archive.org/25/items/bitter2018-11-02/06RushMe.mp3"
-                }]
+    props: ["unique"],
+    computed: {
+     tracks() {
+         let ob = store.state.projects.filter((e) => e._id == this.unique)[0]
+        return ob ? ob.tracks : null
         }
     },
     components: {
