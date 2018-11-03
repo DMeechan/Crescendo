@@ -17,7 +17,7 @@
     <br />
     <hr />
     <div>
-      <h3>Upload track</h3>
+      <h3>Upload track (under construction)</h3>
       <div>
         <form role="form" onsubmit="return false;">
           <div class="form-group">
@@ -32,7 +32,14 @@
       <input id="track-project-id" />
       <button id="create-track">Create</button>
     </div>
-    
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <hr />
+    <button id="delete-all">dont touch that cactus</button>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.slim.dev.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
     <script>
@@ -96,6 +103,11 @@
             console.error(err);
           })
       }
+
+      document.getElementById("delete-all").addEventListener("click", function() {
+        console.log('emitting deleteAll');
+        socket.emit("deleteAll");
+      });
 
     </script>
   </body>
