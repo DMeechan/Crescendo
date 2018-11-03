@@ -1,26 +1,28 @@
 <template>
   <div class="hello">
     <h2>Crescendo</h2>
-    <v-button :onClick="consoleClick">Create Project</v-button>
+    <v-button :onClick="createProject"> Create Project</v-button>
+    <router-link tag="button" class="col" to="/projects" exact>View Projects</router-link>
+
   </div>
 </template>
 
 <script>
+import {global} from '../main.js'
 import Button from '@/components/Button'
 
 export default {
-  name: 'HelloWorld',
+  name: 'Home',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
     }
   },
   components: {
     'v-button': Button
   },
   methods: {
-    consoleClick() {
-      console.log('Button clicked')
+    createProject() {
+      console.log("Creating project...")
     }
   }
 }
