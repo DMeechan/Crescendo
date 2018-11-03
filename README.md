@@ -25,6 +25,10 @@ The back-end Node.js performs three roles:
 1. Users can view and edit projects
 2. Users can upload tracks to their projects
 
+<!-- ### How do deployments work?
+
+1. We commiy -->
+
 ## Getting started
 
 1. Clone the repository
