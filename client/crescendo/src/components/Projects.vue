@@ -41,18 +41,17 @@
 </style>
 
 <script>
-import {globalStore} from '../main.js'
+import {store} from '../main.js'
 
-export default {
+export default { 
   name: 'Projects',
-  created () {
-      
-  },
-  data () {
-    return {
-      msg: 'Welcome to Your Vue.js App',
-      projects: globalStore.projects
+  computed: {
+    projects() {
+      return store.state.projects
     }
+  },
+  mounted() {
+    
   }
 }
 </script>

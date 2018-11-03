@@ -24,7 +24,7 @@ export default {
   margin: 0 auto;
 }
 
-.header {
-  
+.header img {
+  width: 50px;
 }
 </style>

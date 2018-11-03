@@ -12,7 +12,6 @@
 
 <script>
 import Editor from './Editor'
-import {globalStore, global} from '../main.js'
 export default {
     name: "Project",
     props: ["id"],
@@ -20,7 +19,7 @@ export default {
         Editor,
     },
     beforeRouteUpdate (to, from, next) {
-        console.log(globalStore.socket)
+        console.log()
     },
     data() {
         return {
@@ -28,7 +27,7 @@ export default {
         }
     },
     created() {
-        globalStore.getProject(this.props.id);
+      
     }
 }
 </script>

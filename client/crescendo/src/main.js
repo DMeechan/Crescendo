@@ -4,41 +4,22 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import VueSocketio from 'vue-socket.io';
+import Vuex from 'vuex'
 
-export const globalStore = new Vue({
-  data: {
-    message: "message",
-    projects: [{
-      id: "1",
-      name: "Our Project",
-      tracks: ["1","2"],
-      length: 244533
-    },
-    {
-      id: "2",
-      name: "Our Project",
-      tracks: ["1","2"],
-      length: 244533
-    },
-    {
-      id: "3",
-      name: "Our Project",
-      tracks: ["1","2"],
-      length: 244533
-    },
-    {
-      id: "4",
-      name: "Our Project",
-      tracks: ["1","2"],
-      length: 244533
-    }]
-  }, 
-  methods: {
-    getProjects() {
-      console.log(this)
-    },
-    getProject(id) {
-      
+Vue.use(Vuex)
+
+export const store = new Vuex.Store({
+  state: {
+    projects: []
+  },
+  mutations: {
+    setProjects(state, input) {
+      state.projects = input;
+    }
+  },
+  getters: {
+    projects: state => {
+      return state.projects
     }
   }
 })
@@ -51,19 +32,19 @@ Vue.config.productionTip = false
 export const global = new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>',
   sockets:{
     connect: function(){
       console.log('socket connected')
-      globalStore.socket = this.$socket
     },
     customEmit: function(val){
       console.log('this method was fired by the socket server. eg: io.emit("customEmit", data)')
     },
     allProjects: (projects) => {
+      store.commit('setProjects', projects)
       console.log(projects)
-      globalStore.projects = projects
     }
   },
   data: {
@@ -75,7 +56,7 @@ export const global = new Vue({
         this.$socket.emit('emit_method', val)
     },
     getProjects: () => {
-      this.data.projects.push({"hello": "there"})
+      
     }
   }
 })
