@@ -68,15 +68,21 @@ export const global = new Vue({
     getProjects: () => {
       
     },
-    addTrack: async (name, parts) => {
+    addTrack: function(name, file, project) {
       let fd = new FormData()
-      fd.append("file", new File(parts, `${name}.webm`))
+      fd.append("file", file)
 
       fetch("https://file.io", {
         method: 'POST',
         body: fd
       }).then(response => response.json()).then(resp => {
         console.log(resp)
+        this.$socket.emit('addTrack', {
+          projectId: project,
+          url: resp.link,
+          name: name,
+          length: 1
+        })
       })
 
       
