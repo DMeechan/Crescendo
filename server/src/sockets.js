@@ -44,12 +44,18 @@ const start = httpServer => {
             emitProjects(io);
         });
 
-        socket.on('addTrack', data => {
-
+        socket.on('addTrack', async data => {
+            await event.createTrack({
+                name: data.name,
+                url: data.url,
+                length: data.length,
+            });
+            emitProjects(io);
         });
 
-        socket.on('deleteTrack', data => {
-
+        socket.on('deleteTrack', async data => {
+            await event.deleteProject(data._id);
+            emitProjects(io);
         });
 
         socket.on('disconnect', () => {

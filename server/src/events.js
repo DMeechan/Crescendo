@@ -33,11 +33,13 @@ class Event {
         }
     }
 
-    async createTrack(name, url, length) {
+    async createTrack(data) {
+        if (!data.name || !data.url || !data.length) {
+            console.error('createTrack | Whoop, found not find name, url, or length data');
+            return;
+        }
         try {
-            await Track.create({
-                name, url, length
-            });
+            await Track.create(data);
         } catch (error) {
             console.error(error);
         }
