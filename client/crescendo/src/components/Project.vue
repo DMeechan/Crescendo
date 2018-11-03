@@ -32,7 +32,8 @@ export default {
       fileSelector.click();
 
       fileSelector.addEventListener("change", () => {
-         global.addTrack("MyTrack", fileSelector.files[0], this.$route.params.id);
+        
+         global.addTrack(fileSelector.files[0].name, fileSelector.files[0], this.$route.params.id);
       })
     },
     record() {

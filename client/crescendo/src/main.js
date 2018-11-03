@@ -69,6 +69,7 @@ export const global = new Vue({
       
     },
     addTrack: function(name, file, project) {
+      console.log(file)
       let fd = new FormData()
       fd.append("file", file)
 
