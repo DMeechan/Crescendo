@@ -8,7 +8,7 @@ const clientConnected = () => {
     console.log(`Client connected: ${numUsers} online`);
 }
 
-const emitProjects = async (socket) => {
+const emitProjects = async (io) => {
     try {
         const projects = await event.getProjects();
         io.emit('allProjects', projects);
@@ -31,17 +31,17 @@ const start = httpServer => {
     io.on('connection', async socket => {
         clientConnected();
 
-        emitProjects(socket);
+        emitProjects(io);
         emitTimeRegularly(socket);
 
         socket.on('createProject', async data => {
             await event.createProject(data.name);
-            emitProjects(socket);
+            emitProjects(io);
         });
 
         socket.on('deleteProject', async data => {
             await event.deleteProject(data._id);
-            emitProjects(socket);
+            emitProjects(io);
         });
 
         socket.on('addTrack', data => {
