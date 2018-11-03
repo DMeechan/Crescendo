@@ -1,10 +1,11 @@
 <template>
     <div class="editor">
-        
+        <button class="play" @click="play()">Play</button>
         <draggable v-model="tracks" @start="drag=true" @end="drag=false">
             <div class="track" v-for="element in tracks" :key="element.id">
                 <span class="track-title">{{element.name}}</span>
                 <span class="track-length">{{element.length}}</span>
+                <audio v-bind:src="element.url" controls></audio>
             </div>
         </draggable>
     </div>
@@ -48,6 +49,8 @@
 
 <script>
 import draggable from 'vuedraggable'
+import { SoundCloudWaveform } from '../wave';
+
 export default {
     name: 'Editor',
     data() {
@@ -55,17 +58,24 @@ export default {
             tracks: [{
                     name: "Track One",
                     id: 1, 
-                    length: 1000
+                    length: 1000,
+                    url: "https://ia801501.us.archive.org/25/items/bitter2018-11-02/01OtherDoor.mp3"
                 },
                 {
                     name: "two", 
                     id: 2, 
-                    length: 2000
+                    length: 2000,
+                    url: "https://ia801501.us.archive.org/25/items/bitter2018-11-02/06RushMe.mp3"
                 }]
         }
     },
     components: {
         draggable
+    },
+    methods: {
+        play() {
+            Object.values(document.getElementsByTagName("audio")).forEach((tag) => tag.paused ? tag.play() : tag.pause())
+        }
     }
 }
 </script>

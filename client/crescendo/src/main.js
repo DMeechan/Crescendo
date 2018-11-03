@@ -5,6 +5,7 @@ import App from './App'
 import router from './router'
 import VueSocketio from 'vue-socket.io';
 import Vuex from 'vuex'
+import { SoundCloudWaveform } from './wave';
 
 Vue.use(Vuex)
 
@@ -45,18 +46,41 @@ export const global = new Vue({
     allProjects: (projects) => {
       store.commit('setProjects', projects)
       console.log(projects)
+    },
+    users: (users) => {
+      store.commit('showUsers', users)
     }
   },
   data: {
      
   },
+  mounted() {
+ 
+  },
   methods: {
-    clickButton: function(val){
+    createProject: function(val){
         // $socket is socket.io-client instance
-        this.$socket.emit('emit_method', val)
+        this.$socket.emit('createProject', val)
+    },
+    deleteProject: function(id) {
+      this.$socket.emit('deleteProject', {_id: id})
     },
     getProjects: () => {
+      
+    },
+    addTrack: async (name, parts) => {
+      let fd = new FormData()
+      fd.append("file", new File(parts, `${name}.webm`))
+
+      fetch("https://file.io", {
+        method: 'POST',
+        body: fd
+      }).then(response => response.json()).then(resp => {
+        console.log(resp)
+      })
+
       
     }
   }
 })
+
