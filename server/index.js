@@ -14,6 +14,13 @@ const INDEX_HTML = path.join(PUBLIC_DIR, 'index.html');
 const sockets = require('./src/sockets');
 sockets(server);
 
+// Enable CORS
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
 // Create root endpoint to show server is up
 app.get('/', (req, res) => {
   res.sendFile(INDEX_HTML);

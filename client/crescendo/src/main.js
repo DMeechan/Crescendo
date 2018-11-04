@@ -75,7 +75,7 @@ export const global = new Vue({
     getProjects: () => {
       
     },
-    addTrack: function(name, file, project) {
+    addTrackPrevious: function(name, file, project) {
       console.log(file)
       let fd = new FormData()
       fd.append("file", file)
@@ -92,8 +92,6 @@ export const global = new Vue({
           length: 1
         })
       })
-
-      
     }
   }
 })
