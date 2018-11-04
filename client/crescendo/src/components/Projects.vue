@@ -1,5 +1,14 @@
 <template>
 <div class="projects">
+    <hr />
+    <br />
+    <span v-if="users">
+        <p>Users connected: {{ users }}</p>
+    </span>
+    <input v-model="newName" type="text" />
+    <v-button :onClick="createProject">Create Project</v-button>
+    <br />
+    <br />
     <div class="grid">
         <router-link v-for="project in projects" :to="`/project/${project._id}`" :key="project.id" >
             <div class="project">
@@ -9,7 +18,6 @@
             </div>
         </router-link>
     </div>
-    <input v-model="newName" type="text" /><v-button :onClick="createProject">Create Project</v-button>
 </div>
 </template>
 
@@ -57,6 +65,10 @@ export default {
   computed: {
     projects() {
       return store.state.projects
+    },
+    users() {
+        console.log('Connected:', store.state)
+        return store.state.users;
     }
   },
   data() {

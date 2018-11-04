@@ -11,17 +11,24 @@ Vue.use(Vuex)
 
 export const store = new Vuex.Store({
   state: {
-    projects: []
+    projects: [],
+    users: 0,
   },
   mutations: {
     setProjects(state, input) {
       state.projects = input;
+    },
+    setUsers(state, input) {
+      state.users = input.count;
     }
   },
   getters: {
     projects: state => {
       return state.projects
-    }
+    },
+    users: state => {
+      return state.users
+    },
   }
 })
 
@@ -48,7 +55,7 @@ export const global = new Vue({
       console.log(projects)
     },
     users: (users) => {
-      store.commit('showUsers', users)
+      store.commit('setUsers', users)
     }
   },
   data: {
