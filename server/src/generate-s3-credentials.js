@@ -5,9 +5,10 @@ const crypto = require('crypto');
 const awsConfig = require('../credentials').aws;
 
 function s3Credentials(filename) {
+  const config = awsConfig;
   return {
     endpoint_url: `https://s3-${config.region}.amazonaws.com/${config.bucket}`,
-    params: s3Params(awsConfig, filename),
+    params: s3Params(config, filename),
   };
 }
 
@@ -63,7 +64,7 @@ function s3UploadPolicy(config, filename, credential) {
 }
 
 function hmac(key, string) {
-  const hmac = require('crypto').createHmac('sha256', key);
+  const hmac = crypto.createHmac('sha256', key);
   hmac.end(string);
   return hmac.read();
 }
@@ -78,5 +79,5 @@ function s3UploadSignature(config, policyBase64, credential) {
 }
 
 module.exports = {
-  s3Credentials: s3Credentials,
+  run: s3Credentials,
 };
